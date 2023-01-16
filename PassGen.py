@@ -1,16 +1,16 @@
-import customtkinter
-from PIL import Image
+import tkinter
 
-# OPTIONS :: "System, "dark", "light"
+import customtkinter
+from PIL import ImageTk, Image
+
 customtkinter.set_appearance_mode("dark")
-# OPTIONS :: "blue" "green" "dark-blue"
 customtkinter.set_default_color_theme("blue")
 
-root = customtkinter.CTk()
-root.geometry("500x250")
-root.resizable(False, False)
-root.eval("tk::PlaceWindow . center")
-root.title("Python Password Generator")
+app = customtkinter.CTk()
+app.geometry("500x400")
+app.resizable(False, False)
+app.eval("tk::PlaceWindow . center")
+app.title("Python Password Generator")
 
 
 def print_test():
@@ -21,8 +21,13 @@ def combo_callback(choice):
     print(choice)
 
 
-frame = customtkinter.CTkFrame(master=root)
-frame.pack(pady=20, padx=60, fill="both", expand=True)
+bg_img = ImageTk.PhotoImage(Image.open("bg.png"))
+background = customtkinter.CTkLabel(master=app, image=bg_img)
+background.pack()
+
+frame = customtkinter.CTkFrame(master=background,
+                               width=400, height=200, corner_radius=15, bg_color="#1b1b1b")
+frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
 lb_password_bd = customtkinter.CTkLabel(master=frame,
                                         width=304, height=49, corner_radius=4,
@@ -50,7 +55,7 @@ lb_password_len = customtkinter.CTkLabel(master=frame, text="Pass Length")
 lb_password_len.place(x=50, y=149)
 cb_password_len = customtkinter.CTkComboBox(master=frame,
                                             width=120,
-                                            values=["16", "32", "64"],
+                                            values=["16", "32", "64", "128"],
                                             command=combo_callback)
 cb_password_len.set("16")
 cb_password_len.place(x=130, y=150)
@@ -63,4 +68,4 @@ copy_icon = customtkinter.CTkImage(Image.open("copy-icon.png").resize((25, 25)))
 bt_copy_pass = customtkinter.CTkButton(master=frame, text="", image=copy_icon, width=25)
 bt_copy_pass.place(x=305, y=150)
 
-root.mainloop()
+app.mainloop()
